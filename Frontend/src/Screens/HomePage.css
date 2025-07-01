@@ -14,6 +14,7 @@
     background-color: #133a1b;
     border-radius: 10px;
     width: 500px;
+    margin-right: 40px;
 }
 
 .form-box input{
@@ -22,14 +23,27 @@
     border-radius: 5px;
 }
 
+.form-box input:focus {
+  outline: none;
+  border: 2px solid #91ac87; 
+  box-shadow: 0 0 5px #91ac87;
+}
+
+
 .form-box button{
     background-color: #91ac87;
     border: none;
     border-radius: 5px;
     color: white;
+    transition: all 0.5s ease-in-out;
 }
 
-.display p{
+.display{
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.display div{
     background-color: #91ac87;
     border-radius: 5px;
 }
@@ -39,6 +53,7 @@
     border: none;
     color: white;
     font-size: 20px;
+    transition: all 0.5s ease-in-out;
 }
 
 .img{
@@ -56,4 +71,49 @@
     width: 5px;
     height: 5px;
     border-radius: 50%;
+}
+
+@media (max-width: 960px) {
+  .left-screen{
+    padding-top: 30px !important;
+  }
+  .main-box{
+    width: 90% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 50px;
+  }
+}
+
+.display-box{
+    padding-top: 15px !important;
+    padding-left: 15px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Background of the scrollbar track */
+::-webkit-scrollbar-track {
+  background: #133a1b;  
+}
+
+/* Scrollbar thumb (the draggable part) */
+::-webkit-scrollbar-thumb {
+  background-color: #133a1b;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+.form-box button:hover{
+    background-color: #7e9a73;
+}
+
+.form-box button:active{
+    background-color: #6d875f;
+}
+
+.buttons button:hover{
+    color: #133a1b;
 }

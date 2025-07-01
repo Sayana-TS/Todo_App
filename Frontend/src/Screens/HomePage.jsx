@@ -9,6 +9,8 @@ import OwlImg from '../assets/owl-question-clipart-xl.png'
 function HomePage() {
 
     let [todos, setTodos] = useState([]);
+    const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
 
     const getTodos = async () => {
         try {
@@ -23,6 +25,29 @@ function HomePage() {
     useEffect(() => {
         getTodos();
     }, []);
+
+    const navigate = useNavigate()
+
+    const submitHandler = async(e)=>{
+        e.preventDefault()
+        try {
+            let response = await Backend.post('/create-todo', {title, description})
+            getTodos()
+            setTitle('')
+            setDescription('')
+        } catch (error) {
+            console.log(error?.message || error?.data?.message);
+        }
+    }
+
+    const deleteHandler = async(id) =>{
+        try {
+            let response = await Backend.delete(`/${id}`)
+            getTodos()
+        } catch (error) {
+            console.log(error?.message || error?.data?.message);
+        }
+    }
 
 
     return (
@@ -63,37 +88,37 @@ function HomePage() {
                 <div className="left-screen d-flex flex-column m-auto order-1">
                     <div className="headings pb-5">
                         <h1 className='pb-3'>ToDo App</h1>
-                        <h4 className='text-light'>Let's Accomplish Task Together!</h4>
+                        <h4 className='text-light'>Let's Accomplish Task Together !</h4>
                     </div>
                     <div className="image-box">
                         <img src={OwlImg} alt="Owl Thinking" className='img' />
                     </div>
                 </div>
-                <div className="main-box ms-auto me-5 mt-5 p-5 order-2 order-md-1" style={{ height: 'fit-content' }}>
+                <div className="main-box ms-auto mt-5 p-5 order-2 order-md-1" style={{ height: 'fit-content' }}>
                     <div className="form-box text-light text-center">
-                        <form action="">
-                            <h2>Get Things Done!</h2>
+                        <form action="" onSubmit={submitHandler}>
+                            <h2>Get Things Done !</h2>
                             <div className="fields d-flex flex-column gap-3 pt-4">
-                                <input type="text" placeholder='Enter Title' className='p-2 text-light' />
-                                <input type="text" placeholder='Enter description' className='p-2 text-light' />
+                                <input type="text" placeholder='Enter Title' className='p-2 text-light' value={title} onChange={(e)=>setTitle(e.target.value)}/>
+                                <input type="text" placeholder='Enter description' className='p-2 text-light' value={description} onChange={(e)=>setDescription(e.target.value)}/>
                                 <button className='p-2'>ADD</button>
                             </div>
                         </form>
                     </div>
-                    <div className="display text-light pt-5">
+                    <div className="display text-light pt-3 mt-4">
                         {todos.map((item, index) => (
-                            <p className='p-2 d-flex flex-row'>
+                            <div className='display-box d-flex flex-row mb-3' key={item._id}>
                                 <div key={index}>
                                     <p>
                                         {index + 1} Title : {item.title}
                                     </p>
                                     <p>Description : {item.description}</p>
                                 </div>
-                                <div className="buttons ms-auto d-flex flex-column pe-2">
+                                <div className="buttons ms-auto d-flex flex-column pe-3">
                                     <button><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer" }} /></button>
-                                    <button className='pt-2'><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer" }} /></button>
+                                    <button className='pt-2' onClick={()=> deleteHandler(item._id)}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer" }} /></button>
                                 </div>
-                            </p>
+                            </div>
                         ))}
                     </div>
                 </div>
