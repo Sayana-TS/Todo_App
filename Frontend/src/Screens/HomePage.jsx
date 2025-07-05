@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from "react-router-dom";
-import Backend from '../Axios';
 import './HomePage.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
 import OwlImg from '../assets/owl-question-clipart-xl.png'
+import { useGetTodosQuery, useCreateTodoMutation, useDeleteTodoMutation } from '../slices/todoApiSlice';
 
 function HomePage() {
 
-    let [todos, setTodos] = useState([]);
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
-    const getTodos = async () => {
-        try {
-            let data = await Backend.get("/getTodos");
+    const { data: todos, refetch } = useGetTodosQuery()
+    const [createTodo] = useCreateTodoMutation()
+    const [deleteTodo] = useDeleteTodoMutation()
 
-            setTodos(data.data);
-        } catch (error) {
-            console.log(error?.message || error?.data?.message);
-        }
-    };
-
-    useEffect(() => {
-        getTodos();
-    }, []);
 
     const navigate = useNavigate()
 
-    const submitHandler = async(e)=>{
+    const submitHandler = async (e) => {
         e.preventDefault()
         try {
-            let response = await Backend.post('/create-todo', {title, description})
-            getTodos()
+            let response = await createTodo({ title, description }).unwrap()
+            refetch()
             setTitle('')
             setDescription('')
         } catch (error) {
@@ -40,10 +30,10 @@ function HomePage() {
         }
     }
 
-    const deleteHandler = async(id) =>{
+    const deleteHandler = async (id) => {
         try {
-            let response = await Backend.delete(`/${id}`)
-            getTodos()
+            let response = await deleteTodo(id).unwrap()
+            refetch()
         } catch (error) {
             console.log(error?.message || error?.data?.message);
         }
@@ -99,27 +89,32 @@ function HomePage() {
                         <form action="" onSubmit={submitHandler}>
                             <h2>Get Things Done !</h2>
                             <div className="fields d-flex flex-column gap-3 pt-4">
-                                <input type="text" placeholder='Enter Title' className='p-2 text-light' value={title} onChange={(e)=>setTitle(e.target.value)}/>
-                                <input type="text" placeholder='Enter description' className='p-2 text-light' value={description} onChange={(e)=>setDescription(e.target.value)}/>
+                                <input type="text" placeholder='Enter Title' className='p-2 text-light' value={title} onChange={(e) => setTitle(e.target.value)} />
+                                <input type="text" placeholder='Enter description' className='p-2 text-light' value={description} onChange={(e) => setDescription(e.target.value)} />
                                 <button className='p-2'>ADD</button>
                             </div>
                         </form>
                     </div>
                     <div className="display text-light pt-3 mt-4">
-                        {todos.map((item, index) => (
-                            <div className='display-box d-flex flex-row mb-3' key={item._id}>
-                                <div key={index}>
-                                    <p>
-                                        {index + 1} Title : {item.title}
-                                    </p>
-                                    <p>Description : {item.description}</p>
+                        {todos && todos.length > 0 ? (
+                            todos.map((item, index) => (
+                                <div className='display-box d-flex flex-row mb-3' key={item._id}>
+                                    <div>
+                                        <p>{index + 1} Title : {item.title}</p>
+                                        <p>Description : {item.description}</p>
+                                    </div>
+                                    <div className="buttons ms-auto d-flex flex-column pe-3">
+                                        <button><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer" }} /></button>
+                                        <button className='pt-2' onClick={() => deleteHandler(item._id)}>
+                                            <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer" }} />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="buttons ms-auto d-flex flex-column pe-3">
-                                    <button><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer" }} /></button>
-                                    <button className='pt-2' onClick={()=> deleteHandler(item._id)}><FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer" }} /></button>
-                                </div>
-                            </div>
-                        ))}
+                            ))
+                        ) : (
+                            <p>No todos found or still loading...</p>
+                        )}
+
                     </div>
                 </div>
             </div>
