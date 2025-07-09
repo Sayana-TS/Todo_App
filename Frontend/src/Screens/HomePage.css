@@ -117,3 +117,8 @@
 .buttons button:hover{
     color: #133a1b;
 }
+
+.completed{
+    text-decoration: line-through;
+    opacity: 0.5;
+}

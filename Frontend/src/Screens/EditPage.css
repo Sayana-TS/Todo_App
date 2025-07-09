@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main-box {
+    margin-top: 130px !important;
+}
+
+.screen {
+    background-color: #91ac87;
+    font-family: 'Chewy', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.fields select {
+    background-color: #133a1b;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+
+.fields select:focus {
+    outline: none;
+    border: 2px solid #91ac87;
+    box-shadow: 0 0 5px #91ac87;
+}

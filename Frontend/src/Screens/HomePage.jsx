@@ -100,11 +100,13 @@ function HomePage() {
                             todos.map((item, index) => (
                                 <div className='display-box d-flex flex-row mb-3' key={item._id}>
                                     <div>
-                                        <p>{index + 1} Title : {item.title}</p>
-                                        <p>Description : {item.description}</p>
+                                        <p className={item?.isCompleted ? 'completed' : null}>{index + 1} Title : {item.title}</p>
+                                        <p className={item?.isCompleted ? 'completed' : null}>Description : {item.description}</p>
                                     </div>
                                     <div className="buttons ms-auto d-flex flex-column pe-3">
-                                        <button><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer" }} /></button>
+                                        {!item.isCompleted && (
+                                            <button onClick={() => navigate(`/edit/${item._id}`)}><FontAwesomeIcon icon={faPen} style={{ cursor: "pointer" }} /></button>
+                                        )}
                                         <button className='pt-2' onClick={() => deleteHandler(item._id)}>
                                             <FontAwesomeIcon icon={faTrash} style={{ cursor: "pointer" }} />
                                         </button>
