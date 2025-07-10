@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.form-box {
+  position: relative;
+}
+
+.owl-img {
+  position: absolute;
+  top: -140px; /* You can adjust this */
+  right: -60px; /* You can adjust this */
+  height: 150px;
+  z-index: 1;
+}
+
