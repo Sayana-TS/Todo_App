@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import './EditPage.css'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetTodoByIdQuery, useUpdateTodoMutation, useGetTodosQuery } from '../slices/todoApiSlice';
+import { useSelector } from 'react-redux';
 
 function EditPage() {
 
   const { id } = useParams()
+
+  const {userInfo} = useSelector((state)=> state.auth)
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -13,7 +16,7 @@ function EditPage() {
 
   const { data: todo, refetch } = useGetTodoByIdQuery({ id })
   const [updateTodo] = useUpdateTodoMutation()
-  const {data, refetch : getAllTodos} = useGetTodosQuery()
+  const {data, refetch : getAllTodos} = useGetTodosQuery({userId : userInfo?._id})
 
   const navigate = useNavigate()
 

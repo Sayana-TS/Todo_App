@@ -5,13 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
 import OwlImg from '../assets/owl-question-clipart-xl.png'
 import { useGetTodosQuery, useCreateTodoMutation, useDeleteTodoMutation } from '../slices/todoApiSlice';
+import { useSelector } from 'react-redux';
 
 function HomePage() {
+
+    const {userInfo} = useSelector((state)=> state.auth)
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
 
-    const { data: todos, refetch } = useGetTodosQuery()
+    const { data: todos, refetch } = useGetTodosQuery({userId : userInfo?._id})
     const [createTodo] = useCreateTodoMutation()
     const [deleteTodo] = useDeleteTodoMutation()
 
@@ -21,7 +24,7 @@ function HomePage() {
     const submitHandler = async (e) => {
         e.preventDefault()
         try {
-            let response = await createTodo({ title, description }).unwrap()
+            let response = await createTodo({ title, description, userId : userInfo?._id }).unwrap()
             refetch()
             setTitle('')
             setDescription('')
@@ -38,6 +41,12 @@ function HomePage() {
             console.log(error?.message || error?.data?.message);
         }
     }
+
+    useEffect(()=>{
+        if(!userInfo){
+            navigate('/login')
+        }
+    },[])
 
 
     return (

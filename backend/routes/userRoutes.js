@@ -3,8 +3,9 @@ import { loginUser, logoutUser, registerUser } from '../controllers/userControll
 
 const userRoute = express.Router()
 
-userRoute.post('/auth', loginUser)
 userRoute.post('/', registerUser)
+userRoute.post('/auth', loginUser)
+
 userRoute.get('/logout', logoutUser)
 
 

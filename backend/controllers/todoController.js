@@ -2,9 +2,10 @@ import Todos from "../model/todoModel.js";
 
 const createTodo = async (req, res) => {
   try {
-    let { title, description } = req.body;
+    let { title, description, userId } = req.body;
 
     let newTodo = await Todos.create({
+      userId,
       title,
       description,
     });
@@ -17,7 +18,8 @@ const createTodo = async (req, res) => {
 
 const getTodo = async (req, res) => {
   try {
-    const todos = await Todos.find();
+    const {userId} = req.query
+    const todos = await Todos.find({userId : userId});
     res.json(todos);
   } catch (error) {
     res.status(500).json(error);
