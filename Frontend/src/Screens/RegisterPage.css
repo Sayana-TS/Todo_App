@@ -16,3 +16,47 @@
   z-index: 1;
 }
 
+.fields label{
+  margin-right: auto;
+  margin-bottom: -10px;
+}
+
+.link-div .link{
+  text-decoration: none;
+  color: white;
+}
+
+.link-div .link:hover{
+  text-decoration: underline;
+  color: #7e9a73;
+}
+
+/* toastStyles.css */
+.toast-success {
+  background-color: #2e4e2b !important; /* Dark green */
+  color: #ffffff !important;
+  font-family: 'Chewy', cursive;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+}
+
+.toast-success .Toastify__progress-bar {
+  background-color: #b9cba4 !important; /* Sage green */
+}
+
+.toast-error {
+  background-color: #783e3e !important; /* Muted deep red */
+  color: #fff7f7 !important;
+  font-family: 'Chewy', cursive;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+}
+
+.toast-error .Toastify__progress-bar {
+  background-color: #f6caca !important; /* Soft pinkish red */
+}
+
+
+.design{
+  margin-bottom: auto;
+}

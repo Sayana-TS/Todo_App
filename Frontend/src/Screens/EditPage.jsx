@@ -3,12 +3,13 @@ import './EditPage.css'
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetTodoByIdQuery, useUpdateTodoMutation, useGetTodosQuery } from '../slices/todoApiSlice';
 import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 function EditPage() {
 
   const { id } = useParams()
 
-  const {userInfo} = useSelector((state)=> state.auth)
+  const { userInfo } = useSelector((state) => state.auth)
 
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
@@ -16,7 +17,7 @@ function EditPage() {
 
   const { data: todo, refetch } = useGetTodoByIdQuery({ id })
   const [updateTodo] = useUpdateTodoMutation()
-  const {data, refetch : getAllTodos} = useGetTodosQuery({userId : userInfo?._id})
+  const { data, refetch: getAllTodos } = useGetTodosQuery({ userId: userInfo?._id })
 
   const navigate = useNavigate()
 
@@ -37,15 +38,21 @@ function EditPage() {
       refetch()
       getAllTodos()
 
+      toast.success("Boom! That’s a fresh new look", {
+        className: 'toast-success'
+      });
+
       navigate('/')
 
     } catch (error) {
-      console.log(error)
+      toast.error(error?.message || "Oops! Couldn’t save the changes" || error?.data?.message, {
+        className: 'toast-error'
+      });
     }
   }
 
-  useEffect(()=>{
-    if(todo){
+  useEffect(() => {
+    if (todo) {
       setTitle(todo?.title)
       setDescription(todo?.description)
       setIsCompleted(todo?.isCompleted)
@@ -55,6 +62,38 @@ function EditPage() {
   return (
     <>
       <div className="container-fluid screen" style={{ minHeight: '100vh' }}>
+        <div className="design d-flex flex-column gap-2 pt-3">
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div className="design-row d-flex gap-2">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
         <div className="main-box m-auto p-5" style={{ height: 'fit-content' }}>
           <div className="form-box text-light text-center">
             <form onSubmit={editHandler}>
